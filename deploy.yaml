@@ -202,7 +202,7 @@ spec:
         - name: ANALYTICS_HOST
           value: "voting-analytics"
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: votingapp
@@ -210,9 +210,13 @@ metadata:
     kubernetes.io/ingress.class: azure/application-gateway
 spec:
   rules:
-  - host: votingapp.releasr.io
+  - host: skaffold.aks.releasr.io
     http:
       paths:
-      - backend:
-          serviceName: voting-app
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: voting-app
+            port: 
+              number: 80
